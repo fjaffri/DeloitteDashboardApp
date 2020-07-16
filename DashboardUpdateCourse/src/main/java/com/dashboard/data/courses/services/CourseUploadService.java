@@ -1,4 +1,4 @@
-package com.dashboard.service;
+package com.dashboard.data.courses.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -12,17 +12,36 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dashboard.model.Course;
+import com.dashboard.data.courses.model.Course;
 
-
+/**
+ * <h1>Courses Upload Service for processing CSV DATA</h1> This Service class
+ * iterates through each and every row in CSV and map it with Course object
+ * 
+ * @author fjaffri
+ * @version 1.0
+ * @since 2020-07-15
+ * 
+ */
 @Service
 public class CourseUploadService {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	/**
+	 * This method iterates through csv file and maps each row to Course Object
+	 * 
+	 * @param A csv file which contains courses details attended by each registered user.
+	 * @return List<Course> This returns list of courses
+	 */
 	public List<Course> updateCourses(MultipartFile file) throws IOException {
+		logger.info("In CourseUploadService updateCourses()");
+
 		byte[] byteData = file.getBytes();
 		ByteArrayInputStream is = new ByteArrayInputStream(byteData);
 		InputStreamReader reader = new InputStreamReader(is);
@@ -57,25 +76,9 @@ public class CourseUploadService {
 
 		}
 
+		logger.info("Ending CourseUploadService updateCourses()");
+
 		return courses;
-
-	}
-	
-	public Map<String, List<Course>> storeInMap(List<Course> courses) {
-
-		Map<String, List<Course>> map = new HashMap<>();
-		for (Course course : courses) {
-			if (map.containsKey(course.getUserEmail())) {
-				List<Course> res = map.get(course.getUserEmail());
-				res.add(course);
-				map.put(course.getUserEmail(), res);
-			} else {
-				List<Course> results = new ArrayList<>();
-				results.add(course);
-				map.put(course.getUserEmail(), results);
-			}
-		}
-		return map;
 
 	}
 

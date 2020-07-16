@@ -1,8 +1,8 @@
-package com.dashboard.course;
+package com.dashboard.data.courses.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
-import com.dashboard.model.User;
+
+import com.dashboard.data.courses.model.User;
 
 
 public interface UserRepository extends MongoRepository<User, String>{

@@ -1,4 +1,4 @@
-package com.dashboard.model;
+package com.dashboard.data.courses.model;
 
 public class Course {
 

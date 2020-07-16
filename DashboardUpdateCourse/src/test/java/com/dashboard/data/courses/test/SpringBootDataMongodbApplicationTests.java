@@ -1,10 +1,10 @@
-package com.dashboard.course;
+package com.dashboard.data.courses.test;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DeloitteDashboardCourseDataApplicationTests {
+class SpringBootDataMongodbApplicationTests {
 
 	@Test
 	void contextLoads() {
