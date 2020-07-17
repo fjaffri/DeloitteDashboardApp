@@ -18,10 +18,6 @@ public class UserRegDao {
 	public void saveUserToDB(Result result){
 		
 		for (User user : result.getUsers()) {
-			User userByEmail = repository.findBy_id(user.get_id());
-			if(userByEmail!=null) {
-				repository.delete(userByEmail);					
-			}
 			repository.save(user);
 		}
 	}

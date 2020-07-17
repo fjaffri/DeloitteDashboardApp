@@ -67,6 +67,7 @@ public class XlxsReader implements InputFileProcessor {
 		Result result = new Result();
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		int totalRows = sheet.getPhysicalNumberOfRows();
+		int count=0;
 
 		List<User> users = new ArrayList<>();	
 		Iterator<Row> rowIt = sheet.rowIterator();
@@ -94,6 +95,7 @@ public class XlxsReader implements InputFileProcessor {
 				user.setFullyAvailable(row.getCell(16).getStringCellValue());
 				user.setReason(row.getCell(17).getStringCellValue());
 				if(StringUtils.isNotBlank(user.get_id())) {
+					count++;
 					users.add(user);
 				}
 				

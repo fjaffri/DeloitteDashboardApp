@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.aspectj.weaver.NewFieldTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.deloitte.dashboard.Exception.ItemNotFoundException;
 import com.deloitte.dashboard.Model.Course;
 import com.deloitte.dashboard.Model.Result;
 import com.deloitte.dashboard.Model.User;
@@ -48,14 +50,18 @@ public class FileUploadController {
 	    * @return String This returns a messege showing success status. 
 	    */
 	@PostMapping("/user")
-	public String singleFileUpload(@RequestParam("file") MultipartFile file) {
+	public String singleFileUpload(@RequestParam("file") MultipartFile file)
+	{
 		Result res = fileUploadService.readFileType(file);
+		if (res.getUsers() == null || res.getUsers().isEmpty()) {
+			throw new ItemNotFoundException("File contains no data");
+		}
 
 		int totalRowsInExcel = res.gettotalRows();
 		int insertedRowsinDb = res.getUsers().size();
 		if (totalRowsInExcel != insertedRowsinDb) {
 			int rowsNotUpdated = totalRowsInExcel - insertedRowsinDb;
-			return rowsNotUpdated + " rows not updated in DB due to missing email id";
+			return rowsNotUpdated + " rows not updated in DB due to missing email id/duplicate record";
 		}
 		return "All rows inserted successfully in DB";
 	}

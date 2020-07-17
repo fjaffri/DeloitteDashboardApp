@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dashboard.data.courses.Exception.ItemNotFoundException;
 import com.dashboard.data.courses.model.Course;
 import com.dashboard.data.courses.repository.UserDao;
 import com.dashboard.data.courses.services.CourseUploadService;
@@ -51,14 +52,18 @@ public class CourseUploadController {
 	@PostMapping("/course")
 	public String uploadCourseTakenByUsers(@RequestParam("file") MultipartFile file) throws IOException {
 		logger.info("In CourseUploadController uploadCourseTakenByUsers()");
-
+		if (!file.getOriginalFilename().endsWith("csv")) {
+			throw new ItemNotFoundException("File should be .csv format");
+		}
 		List<Course> courses = courseUploadService.updateCourses(file);
-		if (courses != null) {
+		if (!courses.isEmpty()) {
 			userDao.updateDB(courses);
 			logger.info("Ending CourseUploadController uploadCourseTakenByUsers()");
 
 		return "Courses updated with users successfully";
 		}
-		return "Error while parsing CSV file";
+		else {
+			throw new ItemNotFoundException("File does not conatin data");
+		}
 	}
 }

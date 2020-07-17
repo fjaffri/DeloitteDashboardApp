@@ -30,13 +30,14 @@ import com.deloitte.dashboard.Model.Result;
 import com.deloitte.dashboard.Model.User;
 import com.deloitte.dashboard.Repository.UserRegDao;
 import com.deloitte.dashboard.Context;
+import com.deloitte.dashboard.Exception.ItemNotFoundException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * <h1>File Upload Service</h1> This class reades the file and sends it 
- * to differnt methods according to the input file type
+ * <h1>File Upload Service</h1> This class reades the file and sends it to
+ * differnt methods according to the input file type
  * 
  * @author fjaffri
  * @version 1.0
@@ -48,13 +49,16 @@ public class FileUploadService {
 
 	@Autowired
 	private UserRegDao userRegDao;
-	 /** 
-	    * This method reads data from xlsx file, and register it to MongoDb 
-	    * @param An xlxs file which contains users info for registration 
-	    * @return Object This returns a result object binded with List of Users. 
-	    */
-	
+
+	/**
+	 * This method reads data from xlsx file, and register it to MongoDb
+	 * 
+	 * @param An xlxs file which contains users info for registration
+	 * @return Object This returns a result object binded with List of Users.
+	 */
+
 	public Result readFileType(MultipartFile file) {
+		
 		if (file.getOriginalFilename().endsWith("xlsx")) {
 			Context c = new Context(new XlxsReader());
 			Result result = c.readUserRegFile(file);
@@ -69,9 +73,8 @@ public class FileUploadService {
 		} else if (file.getOriginalFilename().endsWith("txt")) {
 			//
 		}
-		return null;
+		throw new ItemNotFoundException("Please upload an XLXS file");
 
 	}
-
 
 }
