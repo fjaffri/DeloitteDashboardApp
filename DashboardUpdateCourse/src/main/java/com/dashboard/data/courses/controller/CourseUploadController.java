@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,13 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dashboard.data.courses.Exception.ItemNotFoundException;
 import com.dashboard.data.courses.model.Course;
+import com.dashboard.data.courses.model.User;
 import com.dashboard.data.courses.repository.UserDao;
 import com.dashboard.data.courses.services.CourseUploadService;
 
 /**
- * <h1>Courses Upload Controller</h1>
- * This controller associates registered users
- * with their courses
+ * <h1>Courses Upload Controller</h1> This controller associates registered
+ * users with their courses
  * 
  * @author fjaffri
  * @version 1.0
@@ -46,13 +47,15 @@ public class CourseUploadController {
 	/**
 	 * This API associates users with there respected courses
 	 * 
-	 * @param A csv file which contains courses details attended by each registered user
+	 * @param A csv file which contains courses details attended by each registered
+	 *          user
 	 * @return String This returns a messege showing success status to the client.
 	 */
 	@PostMapping("/course")
 	public String uploadCourseTakenByUsers(@RequestParam("file") MultipartFile file) throws IOException {
 		logger.info("In CourseUploadController uploadCourseTakenByUsers()");
 		if (!file.getOriginalFilename().endsWith("csv")) {
+
 			throw new ItemNotFoundException("File should be .csv format");
 		}
 		List<Course> courses = courseUploadService.updateCourses(file);
@@ -60,10 +63,29 @@ public class CourseUploadController {
 			userDao.updateDB(courses);
 			logger.info("Ending CourseUploadController uploadCourseTakenByUsers()");
 
-		return "Courses updated with users successfully";
-		}
-		else {
+			return "Courses updated with users successfully";
+		} else {
 			throw new ItemNotFoundException("File does not conatin data");
 		}
 	}
+
+	/**
+	 * This API retrieves all the participants data from MongoDb
+	 *
+	 * @return String This returns a messege showing success or failiure.
+	 */
+	@GetMapping("/data")
+	public String getAllUserData() {
+		logger.info("Getting all user data.");
+
+		List<User> userData = userDao.getAllDataFromDB();
+		String res = courseUploadService.writeDataAtOnce(userData);
+		if (res.equals("success")) {
+			return "Data written into Participant.csv file ";
+
+		}
+		return "Error Writing Data";
+
+	}
+
 }

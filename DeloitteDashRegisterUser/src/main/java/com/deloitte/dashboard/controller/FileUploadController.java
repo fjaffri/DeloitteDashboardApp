@@ -25,16 +25,13 @@ import com.deloitte.dashboard.Model.User;
 import com.deloitte.dashboard.Repository.UserRegRepository;
 import com.deloitte.dashboard.service.FileUploadService;
 
-
-
 /**
- * <h1>File Upload Controller</>
- * This controller implements functionality
- * to register user in bulk in MongoDB
+ * <h1>File Upload Controller</> This controller implements functionality to
+ * register user in bulk in MongoDB
  * 
  * @author fjaffri
- * @version 1.0 
- * @since   2020-07-15 
+ * @version 1.0
+ * @since 2020-07-15
  * 
  */
 @EnableEurekaClient
@@ -44,14 +41,15 @@ public class FileUploadController {
 	FileUploadService fileUploadService;
 	@Autowired
 	UserRegRepository repository;
-	   /** 
-	    * This API is used to perform bulk registration in MongoDB 
-	    * @param An xlxs file which contains users for registration 
-	    * @return String This returns a messege showing success status. 
-	    */
+
+	/**
+	 * This API is used to perform bulk registration in MongoDB
+	 * 
+	 * @param An xlxs file which contains users for registration
+	 * @return String This returns a messege showing success status.
+	 */
 	@PostMapping("/user")
-	public String singleFileUpload(@RequestParam("file") MultipartFile file)
-	{
+	public String singleFileUpload(@RequestParam("file") MultipartFile file) {
 		Result res = fileUploadService.readFileType(file);
 		if (res.getUsers() == null || res.getUsers().isEmpty()) {
 			throw new ItemNotFoundException("File contains no data");
@@ -65,8 +63,6 @@ public class FileUploadController {
 		}
 		return "All rows inserted successfully in DB";
 	}
-
-
 
 
 }

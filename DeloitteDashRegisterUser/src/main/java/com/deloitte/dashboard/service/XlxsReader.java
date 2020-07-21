@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.deloitte.dashboard.Model.Course;
 import com.deloitte.dashboard.Model.Result;
 import com.deloitte.dashboard.Model.User;
 import com.deloitte.dashboard.Repository.UserRegRepository;
@@ -70,6 +71,7 @@ public class XlxsReader implements InputFileProcessor {
 		int count=0;
 
 		List<User> users = new ArrayList<>();	
+		List<Course> course = new ArrayList<>();	
 		Iterator<Row> rowIt = sheet.rowIterator();
 		while (rowIt.hasNext()) {
 			Row row = rowIt.next();
@@ -94,6 +96,7 @@ public class XlxsReader implements InputFileProcessor {
 				user.setAcknowledgemnet(row.getCell(15).getStringCellValue());
 				user.setFullyAvailable(row.getCell(16).getStringCellValue());
 				user.setReason(row.getCell(17).getStringCellValue());
+				user.setCourse(course);
 				if(StringUtils.isNotBlank(user.get_id())) {
 					count++;
 					users.add(user);

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.dashboard.data.courses.Exception.ItemNotFoundException;
 import com.dashboard.data.courses.model.Course;
 import com.dashboard.data.courses.model.User;
 
@@ -28,9 +29,8 @@ public class UserDao {
 
 	@Autowired
 	UserRepository repository;
-	
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * This method iterates through the List of Courses and associate each
@@ -41,7 +41,7 @@ public class UserDao {
 	 */
 
 	public void updateDB(List<Course> courses) {
-        logger.info("In UserDao updateDB()");
+		logger.info("In UserDao updateDB()");
 		Map<String, List<Course>> map = storeInMap(courses);
 		for (Entry<String, List<Course>> mapData : map.entrySet()) {
 
@@ -53,8 +53,7 @@ public class UserDao {
 			}
 
 		}
-        logger.info("Ending UserDao updateDB()");
-
+		logger.info("Ending UserDao updateDB()");
 
 	}
 
@@ -67,7 +66,7 @@ public class UserDao {
 	 * @return Map of email id and list of courses that user is registered to
 	 */
 	public Map<String, List<Course>> storeInMap(List<Course> courses) {
-        logger.info("In UserDao storeInMap()");
+		logger.info("In UserDao storeInMap()");
 
 		Map<String, List<Course>> map = new HashMap<>();
 		for (Course course : courses) {
@@ -81,9 +80,20 @@ public class UserDao {
 				map.put(course.getUserEmail(), results);
 			}
 		}
-        logger.info("Ending UserDao storeInMap()");
+		logger.info("Ending UserDao storeInMap()");
 
 		return map;
+
+	}
+
+	public List<User> getAllDataFromDB() {
+		logger.info("In UserDao getAllDataFromDB()");
+		List<User> users = repository.findAll();
+		if (users == null || users.isEmpty()) {
+			throw new ItemNotFoundException("No user data available");
+
+		}
+		return users;
 
 	}
 
