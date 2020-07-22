@@ -93,6 +93,8 @@ public class UserDao {
 			throw new ItemNotFoundException("No user data available");
 
 		}
+		logger.info("Ending UserDao getAllDataFromDB()");
+
 		return users;
 
 	}

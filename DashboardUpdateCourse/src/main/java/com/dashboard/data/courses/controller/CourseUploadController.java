@@ -70,13 +70,13 @@ public class CourseUploadController {
 	}
 
 	/**
-	 * This API retrieves all the participants data from MongoDb
+	 * This API retrieves all the participants data from MongoDb and writes to CSV file
 	 *
 	 * @return String This returns a messege showing success or failiure.
 	 */
 	@GetMapping("/data")
 	public String getAllUserData() {
-		logger.info("Getting all user data.");
+		logger.info("In CourseUploadController getAllUserData()");
 
 		List<User> userData = userDao.getAllDataFromDB();
 		String res = courseUploadService.writeDataAtOnce(userData);
@@ -84,6 +84,7 @@ public class CourseUploadController {
 			return "Data written into Participant.csv file ";
 
 		}
+		logger.info("Ending CourseUploadController getAllUserData()");
 		return "Error Writing Data";
 
 	}

@@ -99,6 +99,7 @@ public class CourseUploadService {
 	 */
 	public String writeDataAtOnce(List<User> users) {
 		
+		logger.info("In CourseUploadService writeDataAtOnce()");
 
 		// File name where participant data will be written
 		File file = new File("ParticipintsData.csv");
@@ -157,6 +158,7 @@ public class CourseUploadService {
 
 			writer.writeAll(data);
 			writer.close();
+			logger.info("Ending CourseUploadService writeDataAtOnce()");
 
 			return "success";
 
