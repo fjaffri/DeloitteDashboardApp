@@ -98,6 +98,7 @@ public class CourseUploadService {
 	 * @return String Success message if the data is written to CSV
 	 */
 	public String writeDataAtOnce(List<User> users) {
+		
 
 		// File name where participant data will be written
 		File file = new File("ParticipintsData.csv");
