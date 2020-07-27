@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,13 +59,12 @@ public class FileUploadService {
 	 */
 
 	public Result readFileType(MultipartFile file) {
-		
 		if (file.getOriginalFilename().endsWith("xlsx")) {
 			Context c = new Context(new XlxsReader());
 			Result result = c.readUserRegFile(file);
-			if (result != null) {
-				userRegDao.saveUserToDB(result);
-			}
+//			if (result != null) {
+//				//userRegDao.saveUserToDB(result);
+//			}
 			return result;
 
 		} else if (file.getOriginalFilename().endsWith("xml")) {

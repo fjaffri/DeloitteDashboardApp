@@ -1,5 +1,12 @@
 server:
   port: 8080
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 128MB
+      max-request-size: 128MB
+        
+        
 # Define the Eureka server that handles service registration
 eureka:
   instance:
@@ -10,4 +17,4 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
 #database:
 spring:  data:    mongodb:      host: 127.0.0.1
-      database: dashboard
+      database: dashboard        

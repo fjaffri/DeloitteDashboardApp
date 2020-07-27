@@ -1,5 +1,6 @@
 server:
   port: 8079
+        
 # Define the Eureka server that handles service registration
 eureka:
   instance:

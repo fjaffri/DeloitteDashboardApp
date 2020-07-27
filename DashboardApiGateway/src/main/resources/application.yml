@@ -1,6 +1,8 @@
 spring:
   application:
-    name: DashboardApiGateway
+    name: DashboardApiGateway  servlet:    multipart:      enabled: true
+      max-file-size: 128MB
+      max-request-size: 128MB        
 
 # Define the port where the API gateway server would be running
 server:

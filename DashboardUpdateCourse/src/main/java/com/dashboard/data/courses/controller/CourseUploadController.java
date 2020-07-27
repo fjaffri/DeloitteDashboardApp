@@ -1,6 +1,7 @@
 package com.dashboard.data.courses.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -58,11 +59,14 @@ public class CourseUploadController {
 
 			throw new ItemNotFoundException("File should be .csv format");
 		}
+		long time = System.currentTimeMillis();
+
 		List<Course> courses = courseUploadService.updateCourses(file);
 		if (!courses.isEmpty()) {
 			userDao.updateDB(courses);
 			logger.info("Ending CourseUploadController uploadCourseTakenByUsers()");
-
+			long responseTime = (System.currentTimeMillis() - time);
+			System.out.println("Execution time for uploading courses associated with users "+responseTime);
 			return "Courses updated with users successfully";
 		} else {
 			throw new ItemNotFoundException("File does not conatin data");
@@ -77,13 +81,18 @@ public class CourseUploadController {
 	@GetMapping("/data")
 	public String getAllUserData() {
 		logger.info("In CourseUploadController getAllUserData()");
+		long time = System.currentTimeMillis();
 
 		List<User> userData = userDao.getAllDataFromDB();
 		String res = courseUploadService.writeDataAtOnce(userData);
 		if (res.equals("success")) {
+			long responseTime = (System.currentTimeMillis() - time);
+			System.out.println("Execution time for getting participants data in CSV API "+responseTime);
+
 			return "Data written into Participant.csv file ";
 
 		}
+
 		logger.info("Ending CourseUploadController getAllUserData()");
 		return "Error Writing Data";
 

@@ -47,6 +47,8 @@ public class XlxsReader implements InputFileProcessor {
 	    */
 	@Override
 	public Result readUserRegFile(MultipartFile file) {
+		long time = System.currentTimeMillis();
+
 		byte[] byteArr = null;
 		try {
 			byteArr = file.getBytes();
@@ -106,6 +108,9 @@ public class XlxsReader implements InputFileProcessor {
 		}
 		result.setUsers(users);
 		result.settotalRows(totalRows-1);
+		long responseTime = (System.currentTimeMillis() - time);
+		System.out.println("Execution time for reading files from Excel and mapping to Result OBJ "+responseTime);
+
 		return result;
 		
 				
